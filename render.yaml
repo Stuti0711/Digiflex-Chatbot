@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: Digidlex-Chatbot
+    name: Digiflex-Chatbot
     runtime: python # Change this based on your stack
     repo: https://github.com/Stuti0711/Digiflex-Chatbot.git
     branch: main
