@@ -9,7 +9,7 @@ from speech_to_text import recognize_speech
 
 # Initialize Flask app
 app = Flask(__name__, static_folder="Static")
-CORS(app, supports_credentials=True, resources={r"/*": {"origins": "*"}})
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
