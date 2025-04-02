@@ -53,9 +53,9 @@ def chat():
         logging.error(f"Error in /chat endpoint: {e}")
         return jsonify({"response": "An error occurred while processing your request."})
 
-@app.route("/script/chatbot.js")
+@app.route("/chatbot.js")
 def chatbot_script():
-    return send_from_directory("Static", "chatbot.js")
+    return send_from_directory("", "chatbot.js")
 
 @app.route('/speech', methods=['GET'])
 def speech_to_text():
