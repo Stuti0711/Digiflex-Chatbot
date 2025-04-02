@@ -52,15 +52,10 @@ def chat():
         logging.error(f"Error in /chat endpoint: {e}")
         return jsonify({"response": "An error occurred while processing your request."})
 
-# ✅ Fix: Serve chatbot.js from main folder
-@app.route("/chatbot.js")
+@app.route("/script/chatbot.js")
 def chatbot_script():
-    return send_from_directory(".", "chatbot.js")  # Serve from main folder
+    return send_from_directory("Static", "chatbot.js")
 
-# ✅ Serve script.js correctly from Static folder
-@app.route("/static/script.js")
-def script_js():
-    return send_from_directory("Static", "script.js")
 
 # ✅ Serve speech recognition API
 @app.route("/speech", methods=["GET"])
