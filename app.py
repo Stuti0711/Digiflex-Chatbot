@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template,send_from_directory
+from flask import Flask, request, jsonify, render_template, send_from_directory
 from flask_cors import CORS
 import logging
 from query_ai import query_gemini
@@ -9,17 +9,16 @@ from speech_to_text import recognize_speech
 
 # Initialize Flask app
 app = Flask(__name__, static_folder="Static")
-CORS(app, supports_credentials=True , resources={r"/*": {"origins": "*"}})
+CORS(app, supports_credentials=True, resources={r"/*": {"origins": "*"}})
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
 
 @app.route("/")
 def home():
-    # return "Chatbot is running"
     return render_template("index.html")
 
-@app.route('/chat', methods=['POST'])
+@app.route("/chat", methods=["POST"])
 def chat():
     try:
         data = request.json
@@ -53,16 +52,22 @@ def chat():
         logging.error(f"Error in /chat endpoint: {e}")
         return jsonify({"response": "An error occurred while processing your request."})
 
+# ✅ Fix: Serve chatbot.js from main folder
 @app.route("/chatbot.js")
 def chatbot_script():
-    return send_from_directory("", "chatbot.js")
+    return send_from_directory(".", "chatbot.js")  # Serve from main folder
 
-@app.route('/speech', methods=['GET'])
+# ✅ Serve script.js correctly from Static folder
+@app.route("/static/script.js")
+def script_js():
+    return send_from_directory("Static", "script.js")
+
+# ✅ Serve speech recognition API
+@app.route("/speech", methods=["GET"])
 def speech_to_text():
-    """Endpoint to recognize speech and return text."""
     text = recognize_speech()
     return jsonify({"recognized_text": text})
 
-if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 10000))  # Use Render's default port
-    app.run(host="0.0.0.0",port=port)
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 10000))  # Use default port 10000
+    app.run(host="0.0.0.0", port=port)
