@@ -1,6 +1,6 @@
 
         // API Endpoint
-        const API_URL = "https://digiflex-chatbot.onrender.com//chat";  // Change this if deployed online
+        const API_URL = "https://digiflex-chatbot.onrender.com/chat";  // Change this if deployed online
 
         // Get Elements
         const chatbotIcon = document.getElementById("chatbotIcon");
