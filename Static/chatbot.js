@@ -48,8 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (message) {
             displayMessage(message, "user");
             userMessageInput.value = "";
-            setTimeout(() => generateBotResponse(message), 1000);
-            
+            generateBotResponse(message); // 💬 Now connected to Flask backend
         }
     }
 
@@ -62,17 +61,27 @@ document.addEventListener("DOMContentLoaded", function () {
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
-    // Function to generate bot responses (simple placeholder logic)
+    // Function to get bot response from Flask API
     function generateBotResponse(userInput) {
-        let botReply;
-        if (userInput.toLowerCase().includes("hello")) {
-            botReply = `Hello ${userName}, how can I assist you today?`;
-        } else if (userInput.toLowerCase().includes("help")) {
-            botReply = "Sure! Let me know what you need help with.";
-        } else {
-            botReply = "I'm here to assist you! Can you please clarify your query?";
-        }
-        displayMessage(botReply, "bot");
+        fetch("https://digiflex-chatbot.onrender.com/", { // ✅ Replace with your backend URL
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                message: userInput,
+                format: "default"
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            const botReply = data.response || "🤖 Sorry, I couldn't process that.";
+            displayMessage(botReply, "bot");
+        })
+        .catch(error => {
+            console.error("API Error:", error);
+            displayMessage("❌ Error: Unable to connect to chatbot.", "bot");
+        });
     }
 
     // Close chatbot
